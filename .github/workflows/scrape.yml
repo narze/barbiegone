@@ -1,0 +1,46 @@
+name: Scrape
+
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./scraper
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+          working-directory: ./scraper
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Scrape
+        env:
+          BBG_API_URL: ${{ secrets.BBG_API_URL }}
+        run: ruby main.rb
+
+      - name: Commit and push
+        run: |
+          git diff
+          git config --global user.email "notbarze@users.noreply.github.com"
+          git config --global user.name "narze's bot"
+          git add data.json card.png
+          git commit -m "Refresh data" || exit 0
+          git push
