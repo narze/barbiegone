@@ -21,14 +21,25 @@
 
   // const expire_date_display = format(new Date(expire_date), "dd/MM/yyyy")
   // const progress = Math.min(Math.round((acc_points / 1200) * 100), 100)
-  // let hide = false
+  let hide = false
 
   // function showData() {
   //   alert(JSON.stringify(data, null, 2))
   // }
 
   onMount(() => {
-    motd()
+    const local = window.location.href.includes("localhost")
+
+    const urlParams = new URLSearchParams(window.location.search)
+    const debug = urlParams.has("debug")
+
+    if (navigator.userAgent.includes("Line/") || debug || local) {
+      motd()
+    } else {
+      hide = true
+      alert("เปิดในแอป LINE เดี๋ยวไม่เนียน")
+      window.location.href = "https://line.me/R/nv/chat"
+    }
   })
 
   function motd() {
@@ -54,9 +65,10 @@
   }
 </script>
 
-<main class="container">
-  <img src={card} alt="card" style="max-width: 100%" />
-  <pre>{JSON.stringify(data, null, 2)}</pre>
+{#if hide}
+  <main class="container">
+    <img src={card} alt="card" style="max-width: 100%" />
 
-  Agent: {navigator.userAgent}
-</main>
+    <pre>{JSON.stringify(data, null, 2)}</pre>
+  </main>
+{/if}
