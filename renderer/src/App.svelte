@@ -114,7 +114,11 @@
       <div class="flex items-center flex-col text-base">
         <div>สแกนเพื่อสะสมแต้มได้ที่นี่</div>
         <div>
-          {new Date().toLocaleDateString("en-GB")}
+          {new Date().toLocaleDateString("en-GB", {
+            year: "2-digit",
+            month: "2-digit",
+            day: "2-digit",
+          })}
           {new Date().toLocaleTimeString("en-GB", {
             hour: "2-digit",
             minute: "2-digit",
