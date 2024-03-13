@@ -1,6 +1,6 @@
-// import './app.css'
-import "./styles/app.css"
-import "./styles/mymk.css"
+import "./app.css"
+// import "./styles/app.css"
+// import "./styles/mymk.css"
 // import "./styles/all.min.css"
 // import "./styles/splide.min.css"
 

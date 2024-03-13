@@ -1,13 +1,8 @@
 <script lang="ts">
-  import logo from "./assets/logo.png"
-  import upDiamond from "./assets/up_diamond.png"
-  import Card from "./lib/Card.svelte"
-  import bg from "./assets/bg.png"
   import card from "../../scraper/card.png"
   import data from "../../scraper/data.json"
-  import format from "date-fns/format"
-  import formatDistance from "date-fns/formatDistance"
   import { onMount } from "svelte"
+  import QRCode from "qrcode"
 
   const {
     point, // 231
@@ -26,6 +21,14 @@
   // function showData() {
   //   alert(JSON.stringify(data, null, 2))
   // }
+
+  function qrcode(node, options) {
+    const { value, size } = options
+    QRCode.toCanvas(node, value, {
+      margin: 0,
+      width: size,
+    })
+  }
 
   onMount(() => {
     const local = window.location.href.includes("localhost")
@@ -66,17 +69,75 @@
 </script>
 
 {#if show}
-  <main class="container kanit-light">
-    <img src={card} alt="card" style="max-width: 100%" />
+  <main class="container kanit-light mx-auto py-4 max-w-xl">
+    <div class="p-4">
+      <img src={card} alt="card" class="max-w-full h-auto" />
+    </div>
 
-    <p>ชื่อสมาชิก</p>
-    <p class="kanit-medium">กาบิบ้อน</p>
+    <div class="grid grid-cols-2 gap-4 w-full p-8">
+      <div>
+        <div class="text-sm">ชื่อสมาชิก</div>
+        <div class="text-lg kanit-regular">ริก แอสลี่ย์</div>
+      </div>
 
-    <pre>{JSON.stringify(data, null, 2)}</pre>
+      <div>
+        <div class="text-sm">เลขสมาชิก</div>
+        <div class="text-lg kanit-regular">{cardId}</div>
+      </div>
+
+      <div>
+        <div class="text-sm">ประเภทบัตร</div>
+        <div class="text-lg kanit-regular">{cardType}</div>
+      </div>
+
+      <div>
+        <div class="text-sm">ยอดใช้จ่ายสะสม</div>
+        <div class="text-lg kanit-regular">{spending}</div>
+      </div>
+
+      <div>
+        <div class="text-sm">คะแนนสะสมทั้งหมด</div>
+        <div class="text-3xl kanit-medium">{point}</div>
+      </div>
+
+      <div>
+        <div class="text-sm">คะแนนสะสมจะหมดอายุ</div>
+        <div class="text-sm">
+          {point} คะแนน : {new Date(expireDate).toLocaleDateString("en-GB")}
+        </div>
+      </div>
+    </div>
+
+    <div class="flex items-center flex-col gap-6">
+      <canvas use:qrcode={{ value: cardId, size: 80 }} />
+
+      <div class="flex items-center flex-col text-base">
+        <div>สแกนเพื่อสะสมแต้มได้ที่นี่</div>
+        <div>
+          {new Date().toLocaleDateString("en-GB")}
+          {new Date().toLocaleTimeString("en-GB", {
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
+        </div>
+      </div>
+
+      <a
+        href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        class="text-sm underline text-[#007bff]">เช็คสิทธิประโยชน์สมาชิก</a
+      >
+    </div>
+
+    <!-- <pre>{JSON.stringify(data, null, 2)}</pre> -->
+    <div class="pt-[100%]">
+      <div class="text-xs text-center text-gray-300">
+        Last updated: {updated_at}
+      </div>
+    </div>
   </main>
 {/if}
 
-<style>
+<style lang="postcss">
   @import url("https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,200;0,300;0,400;0,500;0,700;1,200;1,300;1,400;1,500;1,700&display=swap");
 
   .kanit-extralight {
