@@ -21,7 +21,7 @@
 
   // const expire_date_display = format(new Date(expire_date), "dd/MM/yyyy")
   // const progress = Math.min(Math.round((acc_points / 1200) * 100), 100)
-  let hide = false
+  let show = false
 
   // function showData() {
   //   alert(JSON.stringify(data, null, 2))
@@ -34,9 +34,9 @@
     const debug = urlParams.has("debug")
 
     if (navigator.userAgent.includes("Line/") || debug || local) {
+      show = true
       motd()
     } else {
-      hide = true
       alert("เปิดในแอป LINE เดี๋ยวไม่เนียน")
       window.location.href = "https://line.me/R/nv/chat"
     }
@@ -65,7 +65,7 @@
   }
 </script>
 
-{#if hide}
+{#if show}
   <main class="container">
     <img src={card} alt="card" style="max-width: 100%" />
 
