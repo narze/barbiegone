@@ -25,5 +25,14 @@
     "spending": 4799,
     "expireDate": "2025-12-31",
     "updated_at": "2024-04-21T16:45:04+00:00"
+  },
+  {
+    "point": 301,
+    "cardType": "Buddy",
+    "cardId": "313005073147",
+    "level": "GON GANG BUDDY",
+    "spending": 5667,
+    "expireDate": "2025-12-31",
+    "updated_at": "2024-05-21T16:45:03+00:00"
   }
 ]
